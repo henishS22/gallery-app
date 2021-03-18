@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./javascripts/register.js" defer></script>
+    <title>Document</title>
+    <style>
+        h1 {
+            font-size: 20px;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        img {
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="col-md-6 offset-md-3 mt-5">
+        <form id="form" method="post">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" class="form-control" id="name"
+                    placeholder="Enter your name" required="required">
+            </div>
+            <div class="form-group">
+                <label for="email" required="required">Email address</label>
+                <input type="email" name="email" class="form-control" id="email"
+                     placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="password" required="required">Password</label>
+                <input type="password" minlength="6" name="password" class="form-control" id="password"
+                     placeholder="Set Password">
+            </div>
+          
+            <hr>
+            <div class="form-group mt-3">
+                <label class="mr-2">Upload profile Photo</label>
+                <input type="file" name="file" id="file" onchange="fileUpload(this)">
+            </div>
+            <hr>
+            <button type="submit" id="btn" class="btn btn-primary">Submit</button>
+            <div class="row">
+                <p>Already have an account? <a href="/login">Login Here</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

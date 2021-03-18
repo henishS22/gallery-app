@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./javascripts/index.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://cdn.pixabay.com/photo/2017/11/12/22/50/human-2944064_1280.jpg');
+
+        }
+
+        button {
+            padding: 20px;
+            margin: 30px 0 0 50px;
+            border: none;
+            border-radius: 5%;
+
+        }
+
+        #index {
+            background-color: black;
+            opacity: 0.8;
+            font-family:Arial, Helvetica, sans-serif;
+            padding: 10%;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+    </style>
+</head>
+
+<body>
+    <div id="index">
+        <h1 style="color: white;">Welcome to Gallery App</h1>
+        <button id="loginBtn" onclick="openLogin()" style="background-color:darkred;color: white;">Login</button>
+        <button id="registerBtn" onclick="openRegister()" style="background-color: green;color: white;">Register</button>
+    </div>
+</body>
+</html>

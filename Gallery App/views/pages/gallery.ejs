@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./javascripts/gallery.js" defer></script>
+
+    <title>Gallery</title>
+
+    <style>
+        .example-open .modal-backdrop {
+            opacity: 0.5 !important;
+        }
+
+        .gallery-title {
+            font-size: 36px;
+            color: #42B32F;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 70px;
+        }
+
+        .gallery-title:after {
+            content: "";
+            position: absolute;
+            width: 7.5%;
+            left: 46.5%;
+            height: 45px;
+            border-bottom: 1px solid #5e5e5e;
+        }
+
+        .filter-button {
+            font-size: 18px;
+            border: 1px solid #42B32F;
+            border-radius: 5px;
+            text-align: center;
+            color: #42B32F;
+            margin-bottom: 30px;
+
+        }
+
+        .filter-button:hover {
+            font-size: 18px;
+            border: 1px solid #42B32F;
+            border-radius: 5px;
+            text-align: center;
+            color: #ffffff;
+            background-color: #42B32F;
+
+        }
+
+        .filter-button:checked {
+            font-size: 18px;
+            border: 1px solid #42B32F;
+            border-radius: 5px;
+            text-align: center;
+            color: #ffffff;
+            background-color: #42B32F;
+
+        }
+
+        .btn-default:active .filter-button:active {
+            background-color: #42B32F;
+            color: white;
+        }
+
+        .port-image {
+            width: 100%;
+        }
+
+        .gallery_product {
+            margin-bottom: 30px;
+        }
+
+        .features {
+            visibility: hidden;
+        }
+
+        .gallery_product:hover .features {
+            visibility: visible;
+        }
+
+
+        .container {
+            position: relative;
+
+        }
+
+        /* Hide the images by default */
+        .mySlides {
+            display: none;
+        }
+
+        /* Add a pointer when hovering over the thumbnail images */
+        .cursor {
+            cursor: pointer;
+        }
+
+        /* Next & previous buttons */
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 40%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+            margin-right: 15px;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+
+        /* Container for image text */
+        .caption-container {
+            text-align: center;
+            background-color: #222;
+            padding: 2px 16px;
+            color: white;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Six columns side by side */
+        .column {
+            float: left;
+            width: 16.66%;
+        }
+
+        /* Add a transparency effect for thumnbail images */
+        .demo {
+            opacity: 0.6;
+        }
+
+        .active,
+        .demo:hover {
+            opacity: 1;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .flex-container>div {
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div style="padding-top: 20px;font-size: large; display: inline;">
+                <% if(user.dp) { %>
+                    <img src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/users-dp/<%= user.dp %>"
+                        style="height: 70px;width: 70px;margin-top: 10px;border-radius: 50px;">
+                    <% } else { %>
+                        <img src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+                            style="height: 70px;width: 70px;padding-top: 10px;">
+                        <% } %>
+                            <a id="showProfile">
+                                <%= user.name%>
+                            </a>
+            </div>
+            <div style="float:right;padding-top: 20px;display: inline; font-size: large;">
+                <a onclick="logout()">Logout</a>
+            </div>
+
+            <div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h1 class="gallery-title">Gallery</h1>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="btn btn-default filter-button" onclick="showAll()" data-filter="all"
+                    id="all">Images</button>
+                <button class="btn btn-default filter-button" onclick="showFav()" data-filter="hdpe"
+                    id="favourites">Favourites</button>
+                <button class="btn btn-default filter-button" data-filter="hdpe" id="show"
+                    onclick="show()">Slideshow</button>
+                <button class="btn btn-default filter-button" data-toggle="modal" data-target="#exampleModalScrollable"
+                    data-filter="spray">Add Image</button>
+                <button class="btn btn-default filter-button" data-toggle="modal" data-target="#exampleModal"
+                    data-filter="spray">Add Video</button>
+                <button class="btn btn-default filter-button" onclick="showAllVideos()" data-filter="spray">
+                    Videos</button>
+            </div>
+            <br />
+
+
+            <div>
+                <% if(favImg=='undefined' && videos=='undefined' && slides=='undefined' ) { if(!allImg) { %>
+
+                    <% } else { %>
+                        <% allImg.forEach(el=> {
+                            if(el.mediaType=='img') {%>
+
+                            <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter">
+                                <img src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                    style="height: 250px;" class="img-responsive">
+                                <div class="features">
+                                    <% if(el.isFavourite) { %>
+                                        <button class="btn btn-danger"
+                                            onclick="deleteImg('<%= el._id %>')">Delete</button>
+                                        <a href="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                            download><button class="btn btn-warning">Download</button></a>
+                                        <% } else { %>
+                                            <button class="btn btn-primary" onclick="addToFav('<%= el._id %>')">Add To
+                                                Favourites</button>
+                                            <a href="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                                download><button class="btn btn-warning">Download</button></a>
+                                            <button class="btn btn-danger"
+                                                onclick="deleteImg('<%= el._id %>')">Delete</button>
+                                            <% } %>
+                                </div>
+                            </div>
+                            <% }}) %>
+                                <% } } %>
+            </div>
+
+            <div>
+                <% if(allImg=='undefined' && videos=='undefined' && slides=='undefined' ) { if(!favImg) { %>
+                    <p>No Favourites !!</p>
+                    <% } else { %>
+                        <% favImg.forEach(el=> { %>
+                            <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter" id="favMedia">
+                                <% if(el.mediaType=='img' ) { %>
+                                    <img src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                        style="height: 250px;" class="img-responsive">
+                                    <% } else { %>
+                                        <video class="img-fluid" id="favMedia" style="height:250px; width:320px;"
+                                            controls>
+                                            <source
+                                                src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                                style="height: 250px;" class="img-responsive">
+                                        </video>
+                                        <% } %>
+                                            <div class="features">
+                                                <button class="btn btn-primary"
+                                                    onclick="removeFav('<%= el._id %>')">Remove
+                                                    Favourite</button>
+                                                <button class="btn btn-danger"
+                                                    onclick="deleteImg('<%= el._id %>')">Delete</button>
+                                            </div>
+                            </div>
+                            <% }) %>
+                                <% }} %>
+            </div>
+
+            <div>
+                <% if (videos!='undefined' ) { videos.forEach(el=> {%>
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter" id="favMedia">
+                        <video class="img-fluid" style="height:250px; width:320px;" controls>
+                            <source
+                                src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                style="height: 250px;" class="img-responsive">
+                        </video>
+                        <div class="features">
+                            <button class="btn btn-primary" onclick="addToFav('<%= el._id %>')">Add to
+                                Favourite</button>
+                            <button class="btn btn-danger" onclick="deleteImg('<%= el._id %>')">Delete</button>
+                        </div>
+                    </div>
+                    <% }) } %>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div class="modal" id="exampleModalScrollable" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalScrollableLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label class="mr-2">Add Media</label>
+                    <input type="file" name="file" id="fileImage" onchange="fileUpload(this)" multiple>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="uploadMedia()">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+
+    <!-- Video Modal -->
+    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenteredLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label class="mr-2">Add Media</label>
+                    <input type="file" name="file" id="fileVideo" onchange="fileUpload(this)" multiple>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="uploadVideo()">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+
+    <% if(favImg=='undefined' && allImg=='undefined' && videos=='undefined' ){ %>
+        <div class="slideshow" id='a'>
+
+            <div class="container" style="width: 80%;">
+                <% slides.forEach(el=> {
+                    if(el.mediaType == 'img') {%>
+                    <div class="mySlides">
+                        <img src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                            style="width:100%;">
+                    </div>
+                    <% }}) %>
+
+                        <a class="prev" onclick="plusSlides(-1)">❮</a>
+                        <a class="next" onclick="plusSlides(1)">❯</a>
+
+                        <div class="caption-container">
+                            <p id="caption"></p>
+                        </div>
+
+                        <div class="row flex-container">
+
+                            <% slides.forEach(el=> {
+                                if(el.mediaType == 'img') {%>
+                                <div class="column">
+                                    <img class="demo cursor"
+                                        src="https://henish-gallery-app.s3.ap-south-1.amazonaws.com/user-media/<%= el.url %>"
+                                        style="width:100%;height: 100%;margin-left: 15px;" alt="<%= el.url %>">
+                                </div>
+                                <%} }) %>
+                        </div>
+            </div>
+
+            <script>
+                var slideIndex = 1;
+                showSlides(slideIndex);
+
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                }
+
+                function currentSlide(n) {
+                    showSlides(slideIndex = n);
+                }
+
+                function showSlides(n) {
+                    var i;
+                    var slides = document.getElementsByClassName("mySlides");
+                    var dots = document.getElementsByClassName("demo");
+                    var captionText = document.getElementById("caption");
+                    if (n > slides.length) { slideIndex = 1 }
+                    if (n < 1) { slideIndex = slides.length }
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                    }
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex - 1].style.display = "block";
+                    dots[slideIndex - 1].className += " active";
+                    captionText.innerHTML = dots[slideIndex - 1].alt;
+                }
+            </script>
+        </div>
+        <% } %>
+
+</body>
+
+</html>
